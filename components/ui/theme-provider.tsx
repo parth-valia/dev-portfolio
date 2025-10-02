@@ -18,8 +18,12 @@ interface ThemeProviderProps {
 
 export function ThemeProvider({ children, defaultTheme = 'system' }: ThemeProviderProps) {
   const [theme, setTheme] = useState<Theme>(defaultTheme);
+  const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
+    setMounted(true);
+    
+    // Load theme from localStorage only on client-side
     const stored = localStorage.getItem('theme') as Theme;
     if (stored) {
       setTheme(stored);
@@ -27,6 +31,8 @@ export function ThemeProvider({ children, defaultTheme = 'system' }: ThemeProvid
   }, []);
 
   useEffect(() => {
+    if (!mounted) return;
+    
     const root = window.document.documentElement;
     root.classList.remove('light', 'dark');
 
@@ -38,7 +44,7 @@ export function ThemeProvider({ children, defaultTheme = 'system' }: ThemeProvid
     }
 
     localStorage.setItem('theme', theme);
-  }, [theme]);
+  }, [theme, mounted]);
 
   const value = {
     theme,

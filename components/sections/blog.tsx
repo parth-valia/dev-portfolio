@@ -75,11 +75,12 @@ export function BlogSection() {
                     <div>
                       <div className="relative">
                         {post.image && (
-                          <div className="aspect-video overflow-hidden">
+                          <div className="aspect-video relative overflow-hidden">
                             <Image
                               src={post.image}
                               alt={post.title}
                               fill
+                              priority
                               className="object-cover transition-transform duration-300 group-hover:scale-105"
                             />
                           </div>

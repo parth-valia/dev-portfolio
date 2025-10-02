@@ -170,7 +170,7 @@ export default function ProjectPageClient({ project, featuredProjects }: Project
           </div>
 
           <motion.div 
-            className="space-y-6"
+            className="space-y-6 relative"
             initial={{ opacity: 0, x: 20 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.6, delay: 0.4 }}
@@ -180,6 +180,7 @@ export default function ProjectPageClient({ project, featuredProjects }: Project
                 src={project.coverImage}
                 alt={project.title}
                 fill
+                priority
                 className="object-cover hover:scale-105 transition-transform duration-500"
               />
               <div className="absolute inset-0 bg-gradient-to-t from-black/20 via-transparent to-transparent" />
@@ -279,12 +280,13 @@ export default function ProjectPageClient({ project, featuredProjects }: Project
             <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-8 mb-8 mt-4">
               {featuredProjects.map((project, index) => (
                 <RevealOnScroll key={project.slug} delay={index * 0.1}>
-                  <Card className="h-full overflow-hidden group cursor-pointer border-0 shadow-md hover:shadow-xl transition-all duration-300">
+                  <Card className="h-full relative overflow-hidden group cursor-pointer border-0 shadow-md hover:shadow-xl transition-all duration-300">
                     <div className="aspect-video relative overflow-hidden">
                       <Image
                         src={project.coverImage}
                         alt={project.title}
                         fill
+                        priority
                         className="object-cover group-hover:scale-105 transition-transform duration-300"
                       />
                       <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />

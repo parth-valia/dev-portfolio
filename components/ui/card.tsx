@@ -74,5 +74,5 @@ const CardFooter = React.forwardRef<HTMLDivElement, PolymorphicProps<HTMLDivElem
   }
 );
 CardFooter.displayName = "CardFooter";
-
+ 
 export { Card, CardHeader, CardFooter, CardTitle, CardDescription, CardContent };

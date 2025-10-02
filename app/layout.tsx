@@ -7,7 +7,7 @@ import { Footer } from '@/components/layout/footer';
 import { Toaster } from '@/components/ui/toaster';
 import { PageTransition } from '@/components/ui/page-transition';
 import { SmoothScroll } from '@/components/ui/smooth-scroll';
-import { FirstVisitProvider } from '@/components/ui/first-visit-provider';
+import { Suspense } from 'react'
 
 const inter = Inter({ subsets: ['latin'] });
 
@@ -25,18 +25,20 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en" suppressHydrationWarning>
-      <body className={inter.className}>
+    <html lang="en" className="hydrated" suppressHydrationWarning>
+      <body cz-shortcut-listen="true" className={inter.className}>
         <ThemeProvider defaultTheme="dark">
-          <FirstVisitProvider>
-            <SmoothScroll />
-            <Header />
-            <PageTransition>
-              <main className="min-h-screen">{children}</main>
-            </PageTransition>
-            <Footer />
-            <Toaster />
-          </FirstVisitProvider>
+          <SmoothScroll />
+          <Header />
+          <PageTransition>
+            <main className="min-h-screen">
+              <Suspense>
+                {children}
+              </Suspense>
+            </main>
+          </PageTransition>
+          <Footer />
+          <Toaster />
         </ThemeProvider>
       </body>
     </html>

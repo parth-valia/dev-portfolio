@@ -72,11 +72,12 @@ export function FeaturedProjects() {
                   <Link href={`/projects/${project.slug}`} className="block">
                     <div className="relative">
                       {/* Project Image */}
-                      <div className="aspect-video overflow-hidden">
+                      <div className="aspect-video relative overflow-hidden">
                         <Image
                           src={project.coverImage}
                           alt={project.title}
                           fill
+                          priority
                           className="object-cover transition-transform duration-300 group-hover:scale-105"
                         />
                         <div className="absolute -inset-2 bg-gradient-to-t from-black/80 to-black/20" />

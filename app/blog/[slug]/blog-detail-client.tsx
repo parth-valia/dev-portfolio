@@ -92,12 +92,13 @@ export default function BlogDetailClient({ post }: { post: BlogPost }) {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, delay: 0.4 }}
         >
-          <Card className="card-matrix overflow-hidden mb-8 hover-lift">
+          <Card className="card-matrix relative overflow-hidden mb-8 hover-lift">
             <div className="relative aspect-video overflow-hidden">
               <Image 
                 src={post.coverImage} 
                 alt={post.title} 
                 fill 
+                priority
                 className="object-cover hover:scale-105 transition-transform duration-500" 
               />
               <div className="absolute inset-0 bg-gradient-to-t from-black/20 via-transparent to-transparent" />

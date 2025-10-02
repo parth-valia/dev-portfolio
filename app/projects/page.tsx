@@ -43,20 +43,21 @@ export default function ProjectsPage() {
   const [loadingRepos, setLoadingRepos] = useState<boolean>(true);
   const [repoError, setRepoError] = useState<string | null>(null);
 
+  const fetchRepos = async () => {
+    try {
+      setLoadingRepos(true);
+      const res = await fetch('/api/github');
+      if (!res.ok) throw new Error('Failed to load repositories');
+      const data = await res.json();
+      setRepos((data?.repos || []).slice(0, 9));
+    } catch (e: any) {
+      setRepoError(e?.message || 'Error loading repositories');
+    } finally {
+      setLoadingRepos(false);
+    }
+  };
+
   useEffect(() => {
-    const fetchRepos = async () => {
-      try {
-        setLoadingRepos(true);
-        const res = await fetch('/api/github');
-        if (!res.ok) throw new Error('Failed to load repositories');
-        const data = await res.json();
-        setRepos((data?.repos || []).slice(0, 9));
-      } catch (e: any) {
-        setRepoError(e?.message || 'Error loading repositories');
-      } finally {
-        setLoadingRepos(false);
-      }
-    };
     fetchRepos();
   }, []);
 
@@ -130,12 +131,13 @@ export default function ProjectsPage() {
                 <HoverTilt className="h-full">
                   <Card className="h-full overflow-hidden group cursor-pointer border-0 shadow-md hover:shadow-xl transition-all duration-300">
                     {/* Main clickable area for project details */}
-                    <Link href={`/projects/${project.slug}`} className="block">
+                    <Link href={`/projects/${project.slug}`} className="block relative">
                       <div className="aspect-video relative overflow-hidden">
                         <Image
                           src={project.coverImage}
                           alt={project.title}
                           fill
+                          priority
                           className="object-cover group-hover:scale-105 transition-transform duration-300"
                         />
                         <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />

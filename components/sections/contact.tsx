@@ -105,15 +105,15 @@ export function ContactSection() {
 
       await emailjs.send(serviceId, templateId, templateParams, publicKey);
       
-      setSubmitStatus('success');
-      setFormData({
-        firstName: '',
-        lastName: '',
-        email: '',
-        subject: '',
-        message: ''
-      });
-      setTimeout(() => setSubmitStatus('idle'), 3000);
+        setSubmitStatus('success');
+        setFormData({
+          firstName: '',
+          lastName: '',
+          email: '',
+          subject: '',
+          message: ''
+        });
+        setTimeout(() => setSubmitStatus('idle'), 3000);
     } catch (error) {
       console.error('Email send failed:', error);
       setSubmitStatus('error');
@@ -129,22 +129,22 @@ export function ContactSection() {
         <StaggerItem className="text-center mb-16">
           <div className="flex items-center justify-center space-x-3 mb-4">
             <MessageSquare className="h-6 w-6 text-matrix-green -mt-1" />
-            <TerminalText 
-              text="CONTACT.INIT" 
+            <TerminalText
+              text="CONTACT.INIT"
               className="text-matrix-green text-sm uppercase tracking-wider"
               delay={0.2}
             />
           </div>
-          
-          <MatrixHeading 
+
+          <MatrixHeading
             level={2}
             className="text-3xl sm:text-4xl lg:text-5xl font-bold text-white font-display mb-6"
             delay={0.4}
           >
             Let's <span className="text-cyber-blue font-mono">Connect</span>
           </MatrixHeading>
-          
-          <motion.p 
+
+          <motion.p
             className="text-xl text-muted-foreground max-w-3xl mx-auto"
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -164,7 +164,7 @@ export function ContactSection() {
                   <Terminal className="h-5 w-5 text-matrix-green" />
                   <span className="text-matrix-green font-mono text-lg">COMMUNICATION PROTOCOLS</span>
                 </div>
-                
+
                 <div className="space-y-4">
                   {contactMethods.map((method, index) => {
                     const Icon = method.icon;
@@ -177,7 +177,7 @@ export function ContactSection() {
                         transition={{ delay: 0.4 + index * 0.1 }}
                         className="group"
                       >
-                        <Link 
+                        <Link
                           href={method.href}
                           className="flex items-center space-x-4 p-4 rounded border border-matrix-green-dark hover:border-matrix-green transition-colors bg-matrix-gray-dark/30"
                         >
@@ -239,7 +239,7 @@ export function ContactSection() {
                   <Send className="h-5 w-5 text-cyber-blue" />
                   <span className="text-cyber-blue font-mono text-lg">SECURE MESSAGE PROTOCOL</span>
                 </div>
-                
+
                 <form onSubmit={handleSubmit} className="space-y-4">
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     <motion.div
@@ -249,13 +249,13 @@ export function ContactSection() {
                       transition={{ delay: 0.6 }}
                     >
                       <label className="block text-matrix-green font-mono text-xs mb-2">FIRST_NAME:</label>
-                      <Input 
+                      <Input
                         name="firstName"
                         value={formData.firstName}
                         onChange={handleInputChange}
-                        placeholder="john" 
+                        placeholder="john"
                         required
-                        className="bg-matrix-gray-dark border-matrix-green-dark text-white font-mono placeholder:text-gray-500 focus:border-matrix-green" 
+                        className="bg-matrix-gray-dark border-matrix-green-dark text-white font-mono placeholder:text-gray-500 focus:border-matrix-green"
                       />
                     </motion.div>
                     <motion.div
@@ -265,17 +265,17 @@ export function ContactSection() {
                       transition={{ delay: 0.7 }}
                     >
                       <label className="block text-matrix-green font-mono text-xs mb-2">LAST_NAME:</label>
-                      <Input 
+                      <Input
                         name="lastName"
                         value={formData.lastName}
                         onChange={handleInputChange}
-                        placeholder="doe" 
+                        placeholder="doe"
                         required
-                        className="bg-matrix-gray-dark border-matrix-green-dark text-white font-mono placeholder:text-gray-500 focus:border-matrix-green" 
+                        className="bg-matrix-gray-dark border-matrix-green-dark text-white font-mono placeholder:text-gray-500 focus:border-matrix-green"
                       />
                     </motion.div>
                   </div>
-                  
+
                   <motion.div
                     initial={{ opacity: 0, y: 20 }}
                     whileInView={{ opacity: 1, y: 0 }}
@@ -283,17 +283,17 @@ export function ContactSection() {
                     transition={{ delay: 0.8 }}
                   >
                     <label className="block text-matrix-green font-mono text-xs mb-2">EMAIL_ADDRESS:</label>
-                    <Input 
+                    <Input
                       name="email"
-                      type="email" 
+                      type="email"
                       value={formData.email}
                       onChange={handleInputChange}
-                      placeholder="user@domain.com" 
+                      placeholder="user@domain.com"
                       required
-                      className="bg-matrix-gray-dark border-matrix-green-dark text-white font-mono placeholder:text-gray-500 focus:border-matrix-green" 
+                      className="bg-matrix-gray-dark border-matrix-green-dark text-white font-mono placeholder:text-gray-500 focus:border-matrix-green"
                     />
                   </motion.div>
-                  
+
                   <motion.div
                     initial={{ opacity: 0, y: 20 }}
                     whileInView={{ opacity: 1, y: 0 }}
@@ -301,16 +301,16 @@ export function ContactSection() {
                     transition={{ delay: 0.9 }}
                   >
                     <label className="block text-matrix-green font-mono text-xs mb-2">SUBJECT_LINE:</label>
-                    <Input 
+                    <Input
                       name="subject"
                       value={formData.subject}
                       onChange={handleInputChange}
-                      placeholder="project_collaboration" 
+                      placeholder="project_collaboration"
                       required
-                      className="bg-matrix-gray-dark border-matrix-green-dark text-white font-mono placeholder:text-gray-500 focus:border-matrix-green" 
+                      className="bg-matrix-gray-dark border-matrix-green-dark text-white font-mono placeholder:text-gray-500 focus:border-matrix-green"
                     />
                   </motion.div>
-                  
+
                   <motion.div
                     initial={{ opacity: 0, y: 20 }}
                     whileInView={{ opacity: 1, y: 0 }}
@@ -318,24 +318,24 @@ export function ContactSection() {
                     transition={{ delay: 1.0 }}
                   >
                     <label className="block text-matrix-green font-mono text-xs mb-2">MESSAGE_BODY:</label>
-                    <Textarea 
+                    <Textarea
                       name="message"
                       value={formData.message}
                       onChange={handleInputChange}
-                      placeholder="Enter your message here..." 
+                      placeholder="Enter your message here..."
                       rows={5}
                       required
                       className="bg-matrix-gray-dark border-matrix-green-dark text-white font-mono placeholder:text-gray-500 focus:border-matrix-green resize-none"
                     />
                   </motion.div>
-                  
+
                   <motion.div
                     initial={{ opacity: 0, y: 20 }}
                     whileInView={{ opacity: 1, y: 0 }}
                     viewport={{ once: true }}
                     transition={{ delay: 1.1 }}
                   >
-                    <Button 
+                    <Button
                       type="submit"
                       disabled={isSubmitting}
                       className="w-full bg-transparent border-2 border-matrix-green text-matrix-green hover:bg-matrix-green hover:text-black font-mono group shadow-neon-green disabled:opacity-50 disabled:cursor-not-allowed"
@@ -353,7 +353,7 @@ export function ContactSection() {
                       )}
                     </Button>
                   </motion.div>
-                  
+
                   {/* Status Messages */}
                   {submitStatus === 'success' && (
                     <motion.div
@@ -365,7 +365,7 @@ export function ContactSection() {
                       <span>Message transmitted successfully! I'll respond soon.</span>
                     </motion.div>
                   )}
-                  
+
                   {submitStatus === 'error' && (
                     <motion.div
                       initial={{ opacity: 0, y: 10 }}
@@ -376,7 +376,7 @@ export function ContactSection() {
                       <span>Transmission failed. Please try again or contact directly.</span>
                     </motion.div>
                   )}
-                  
+
                   {/* Status Indicator */}
                   <div className="flex items-center justify-between text-xs font-mono text-gray-500 pt-4 border-t border-matrix-gray-dark">
                     <span>Status: {isSubmitting ? 'Transmitting...' : submitStatus === 'success' ? 'Message sent' : 'Ready for transmission'}</span>

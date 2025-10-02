@@ -119,8 +119,8 @@ export function SectionAnimator({
           animate={{ 
             opacity: shouldAnimate ? (isInView ? 0.1 : 0) : 0,
             background: isInView 
-              ? 'radial-gradient(circle at center, rgba(34,197,94,0.05) 0%, transparent 70%)'
-              : 'transparent'
+              ? 'radial-gradient(circle at center, rgba(34,197,94,0.05) 0%, rgba(255,255,255,0.01) 70%)'
+              : 'rgba(255,255,255,0.01)'
           }}
           transition={{ duration: 0.6 }}
         />
@@ -225,14 +225,13 @@ export function StaggeredSection({
         animate={{ 
           opacity: isInView ? 0.08 : 0,
           background: isInView 
-            ? 'linear-gradient(45deg, rgba(34,197,94,0.03) 0%, transparent 50%, rgba(6,182,212,0.03) 100%)'
-            : 'transparent'
+            ? 'linear-gradient(45deg, rgba(34,197,94,0.03) 0%, rgba(255,255,255,0.01) 50%, rgba(6,182,212,0.03) 100%)'
+            : 'rgba(255,255,255,0.01)'
         }}
         transition={{ duration: 1 }}
       />
       
       <motion.div variants={itemVariants}>
-        {children}
       </motion.div>
     </motion.section>
   );

@@ -237,7 +237,7 @@ export function Header() {
                           }, 100);
                         }
                       } else {
-                        window.location.href = item.href;
+                        router.push(item.href);
                       }
                     }}
                     className={cn(
@@ -308,6 +308,7 @@ export function Header() {
               strokeWidth="3"
               strokeLinecap="round"
               strokeDasharray={100}
+              initial={{ strokeDashoffset: 0 }}
               // Map 0-100 scrollProgress to strokeDashoffset (reverse so ring fills as you scroll)
               animate={{ strokeDashoffset: 100 - scrollProgress }}
               transition={{ duration: 0.2, ease: 'linear' }}

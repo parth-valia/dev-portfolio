@@ -1,9 +1,9 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  output: 'export',
+  reactStrictMode: false,
   eslint: { ignoreDuringBuilds: true },
-  trailingSlash: true,
   images: { unoptimized: true },
+  trailingSlash: true,
 };
 
 module.exports = nextConfig;

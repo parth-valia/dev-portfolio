@@ -13,22 +13,22 @@ export function useFirstVisit() {
 }
 
 export function FirstVisitProvider({ children }: { children: React.ReactNode }) {
-  const [shouldAnimate, setShouldAnimate] = useState<boolean>(() => {
-    // Initialize from sessionStorage synchronously on client to prevent flash
-    if (typeof window === 'undefined') return true; // SSR fallback; client will correct
-    try {
-      const stored = sessionStorage.getItem("pv_has_animated_once");
-      return stored !== "true"; // true if not yet animated this session
-    } catch {
-      return true;
-    }
-  });
+  const [shouldAnimate, setShouldAnimate] = useState<boolean>(true);
+  const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
-    // Mark as animated for the rest of this session (after first paint)
+    setMounted(true);
+
+    // Load from sessionStorage only after hydration
     try {
+      const stored = sessionStorage.getItem("pv_has_animated_once");
+      if (stored === "true") {
+        setShouldAnimate(false);
+      }
       sessionStorage.setItem("pv_has_animated_once", "true");
-    } catch {}
+    } catch {
+      // Ignore sessionStorage errors (e.g., in private browsing)
+    }
   }, []);
 
   const value = useMemo(() => ({ shouldAnimate }), [shouldAnimate]);

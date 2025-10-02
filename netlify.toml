@@ -1,8 +1,12 @@
 [build]
   command = "npm run build"
-  publish = "out"
+  publish = ".next"
 
-# Optional: Specify Node version (recommended)
+# Use Next.js runtime plugin for SSR, API routes, and proper routing
+[[plugins]]
+  package = "@netlify/plugin-nextjs"
+
+# Specify Node version
 [build.environment]
   NODE_VERSION = "18"
 

@@ -72,12 +72,13 @@ export default function BlogPage() {
               <motion.div whileHover={{ y: -4 }} className="h-full">
                 <HoverTilt className="h-full">
                   <Link href={`/blog/${post.slug}`} className="block h-full">
-                    <Card className="h-full overflow-hidden group cursor-pointer border-0 shadow-md hover:shadow-xl transition-all duration-300">
+                    <Card className="h-full relative overflow-hidden group cursor-pointer border-0 shadow-md hover:shadow-xl transition-all duration-300">
                         <div className="aspect-video relative overflow-hidden">
                           <Image
                             src={post.coverImage}
                             alt={post.title}
                             fill
+                            priority
                             className="object-cover group-hover:scale-105 transition-transform duration-300"
                           />
                         </div>
