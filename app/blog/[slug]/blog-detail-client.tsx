@@ -61,7 +61,7 @@ export default function BlogDetailClient({ post }: { post: BlogPost }) {
           <div className="flex items-center gap-6 text-sm text-muted-foreground font-mono">
             <div className="flex items-center gap-2 hover-matrix">
               <Calendar className="h-4 w-4 text-matrix-green" />
-              <span>{formatDate(post.date)}</span>
+              <span suppressHydrationWarning>{formatDate(post.date)}</span>
             </div>
             <div className="flex items-center gap-2 hover-matrix">
               <Clock className="h-4 w-4 text-cyber-blue" />
@@ -93,13 +93,14 @@ export default function BlogDetailClient({ post }: { post: BlogPost }) {
           transition={{ duration: 0.6, delay: 0.4 }}
         >
           <Card className="card-matrix relative overflow-hidden mb-8 hover-lift">
-            <div className="relative aspect-video overflow-hidden">
+            <div className="relative aspect-video overflow-hidden h-auto w-auto">
               <Image 
                 src={post.coverImage} 
                 alt={post.title} 
-                fill 
                 priority
-                className="object-cover hover:scale-105 transition-transform duration-500" 
+                width="0"
+                height="0"
+                className="object-cover hover:scale-105 transition-transform duration-500 w-full h-auto" 
               />
               <div className="absolute inset-0 bg-gradient-to-t from-black/20 via-transparent to-transparent" />
             </div>

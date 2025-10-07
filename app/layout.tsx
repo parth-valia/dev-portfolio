@@ -25,7 +25,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en" className="hydrated" suppressHydrationWarning>
+    <html lang="en">
       <body cz-shortcut-listen="true" className={inter.className}>
         <ThemeProvider defaultTheme="dark">
           <SmoothScroll />

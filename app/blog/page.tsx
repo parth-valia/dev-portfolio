@@ -73,13 +73,14 @@ export default function BlogPage() {
                 <HoverTilt className="h-full">
                   <Link href={`/blog/${post.slug}`} className="block h-full">
                     <Card className="h-full relative overflow-hidden group cursor-pointer border-0 shadow-md hover:shadow-xl transition-all duration-300">
-                        <div className="aspect-video relative overflow-hidden">
+                        <div className="aspect-video relative overflow-hidden h-auto w-auto">
                           <Image
                             src={post.coverImage}
                             alt={post.title}
-                            fill
                             priority
-                            className="object-cover group-hover:scale-105 transition-transform duration-300"
+                            width="0"
+                            height="0"
+                            className="object-cover group-hover:scale-105 transition-transform duration-300 w-full h-auto"
                           />
                         </div>
 
@@ -88,7 +89,7 @@ export default function BlogPage() {
                             <div className="flex items-center space-x-4 text-sm text-muted-foreground">
                               <div className="flex items-center space-x-1">
                                 <Calendar className="h-4 w-4" />
-                                <span>{formatDate(post.date)}</span>
+                                <span suppressHydrationWarning>{formatDate(post.date)}</span>
                               </div>
                               <div className="flex items-center space-x-1">
                                 <Clock className="h-4 w-4" />

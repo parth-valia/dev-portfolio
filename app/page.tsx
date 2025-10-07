@@ -9,7 +9,7 @@ import { MinimalBackground } from '@/components/ui/minimal-background';
 
 export default function Home() {
   return (
-    <>
+    <div>
       <MinimalBackground />
       <section id="home" className="scroll-mt-24 md:scroll-mt-28">
         <HeroSection />
@@ -32,6 +32,6 @@ export default function Home() {
       <section id="contact" className="scroll-mt-24 md:scroll-mt-28">
         <ContactSection />
       </section>
-    </>
+    </div>
   );
 }

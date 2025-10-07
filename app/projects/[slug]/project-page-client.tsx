@@ -175,13 +175,14 @@ export default function ProjectPageClient({ project, featuredProjects }: Project
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.6, delay: 0.4 }}
           >
-            <div className="aspect-video relative overflow-hidden rounded-lg card-matrix hover-lift">
+            <div className="aspect-video relative overflow-hidden rounded-lg card-matrix hover-lift h-auto w-auto">
               <Image
                 src={project.coverImage}
                 alt={project.title}
-                fill
                 priority
-                className="object-cover hover:scale-105 transition-transform duration-500"
+                width="0"
+                height="0"
+                className="object-cover hover:scale-105 transition-transform duration-500 w-full h-auto"
               />
               <div className="absolute inset-0 bg-gradient-to-t from-black/20 via-transparent to-transparent" />
             </div>
@@ -281,13 +282,14 @@ export default function ProjectPageClient({ project, featuredProjects }: Project
               {featuredProjects.map((project, index) => (
                 <RevealOnScroll key={project.slug} delay={index * 0.1}>
                   <Card className="h-full relative overflow-hidden group cursor-pointer border-0 shadow-md hover:shadow-xl transition-all duration-300">
-                    <div className="aspect-video relative overflow-hidden">
+                    <div className="aspect-video relative overflow-hidden h-auto w-auto">
                       <Image
                         src={project.coverImage}
                         alt={project.title}
-                        fill
+                        width="0"
+                        height="0"
                         priority
-                        className="object-cover group-hover:scale-105 transition-transform duration-300"
+                        className="object-cover group-hover:scale-105 transition-transform duration-300 w-full h-auto"
                       />
                       <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
                       <div className="absolute bottom-4 left-4 right-4">

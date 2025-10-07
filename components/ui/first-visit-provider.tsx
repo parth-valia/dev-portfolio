@@ -20,14 +20,16 @@ export function FirstVisitProvider({ children }: { children: React.ReactNode }) 
     setMounted(true);
 
     // Load from sessionStorage only after hydration
-    try {
-      const stored = sessionStorage.getItem("pv_has_animated_once");
-      if (stored === "true") {
-        setShouldAnimate(false);
+    if (typeof window !== 'undefined') {
+      try {
+        const stored = sessionStorage.getItem("pv_has_animated_once");
+        if (stored === "true") {
+          setShouldAnimate(false);
+        }
+        sessionStorage.setItem("pv_has_animated_once", "true");
+      } catch {
+        // Ignore sessionStorage errors (e.g., in private browsing)
       }
-      sessionStorage.setItem("pv_has_animated_once", "true");
-    } catch {
-      // Ignore sessionStorage errors (e.g., in private browsing)
     }
   }, []);
 

@@ -20,16 +20,18 @@ export function Header() {
   const [isMobile, setIsMobile] = useState(false);
   const [showScrollTop, setShowScrollTop] = useState(false);
 
-  // Check if device is mobile
+  // Check if device is mobile - handle SSR properly
   useEffect(() => {
     const checkMobile = () => {
-      setIsMobile(window.innerWidth < 768);
+      setIsMobile(typeof window !== 'undefined' ? window.innerWidth < 768 : false);
     };
-    
+
     checkMobile();
-    window.addEventListener('resize', checkMobile);
-    
-    return () => window.removeEventListener('resize', checkMobile);
+    if (typeof window !== 'undefined') {
+      window.addEventListener('resize', checkMobile);
+
+      return () => window.removeEventListener('resize', checkMobile);
+    }
   }, []);
 
   // Determine which section should be highlighted based on current page
@@ -44,6 +46,8 @@ export function Header() {
   };
 
   useEffect(() => {
+    if (typeof window === 'undefined') return;
+
     const handleScroll = () => {
       setScrolled(window.scrollY > 50);
 
@@ -79,6 +83,8 @@ export function Header() {
   }, [pathname]);
 
   const smoothScrollTo = (elementId: string) => {
+    if (typeof window === 'undefined' || typeof document === 'undefined') return;
+
     const element = document.getElementById(elementId);
     if (element) {
       const headerOffset = isMobile ? 80 : 40;
@@ -93,7 +99,9 @@ export function Header() {
   };
 
   const scrollToTop = () => {
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+    if (typeof window !== 'undefined') {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
   };
 
   return (
