@@ -232,10 +232,16 @@ export function EnhancedAnimatedSection({
   const controls = useAnimation();
   const [isMobile, setIsMobile] = useState(false);
   const [hasPlayed, setHasPlayed] = useState(false);
+  const [mounted, setMounted] = useState(false);
   const { shouldAnimate } = useFirstVisit();
 
-  // Check if device is mobile
   useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  useEffect(() => {
+    if (!mounted) return;
+    
     const checkMobile = () => {
       setIsMobile(window.innerWidth < 768);
     };
@@ -244,11 +250,16 @@ export function EnhancedAnimatedSection({
     window.addEventListener('resize', checkMobile);
     
     return () => window.removeEventListener('resize', checkMobile);
-  }, []);
+  }, [mounted]);
 
   useEffect(() => {
+    // Don't animate until mounted to avoid hydration mismatch
+    if (!mounted) {
+      controls.set('visible');
+      return;
+    }
+
     if (!shouldAnimate) {
-      // Immediately set visible and do not update further
       controls.set('visible');
       return;
     }
@@ -259,18 +270,24 @@ export function EnhancedAnimatedSection({
         setHasPlayed(true);
       }
     } else {
-      // If set to animate once and already played, don't animate out/replay
       if (viewport?.once && hasPlayed) return;
 
-      // Only animate out on desktop, not on mobile to prevent gaps
-      // Exception: always animate header section
       if (!isMobile || id === 'home') {
         controls.start('exit');
       }
     }
-  }, [isInView, controls, isMobile, id, shouldAnimate, viewport, hasPlayed]);
+  }, [isInView, controls, isMobile, id, shouldAnimate, viewport, hasPlayed, mounted]);
 
   const variants = matrixVariants[animationType];
+
+  // Render with consistent initial state to avoid hydration mismatch
+  if (!mounted) {
+    return (
+      <section ref={ref} id={id} className={className}>
+        {children}
+      </section>
+    );
+  }
 
   return (
     <motion.section
@@ -278,7 +295,7 @@ export function EnhancedAnimatedSection({
       id={id}
       className={className}
       custom={direction}
-      initial={shouldAnimate ? 'hidden' : 'visible'}
+      initial="visible"
       animate={controls}
       variants={variants}
       style={{
@@ -305,7 +322,6 @@ export function EnhancedAnimatedSection({
   );
 }
 
-// Staggered item component for use within stagger sections
 export function StaggerItem({ 
   children, 
   className = '',
@@ -315,9 +331,21 @@ export function StaggerItem({
   className?: string;
   delay?: number;
 }) {
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  // Render without motion during SSR to avoid hydration mismatch
+  if (!mounted) {
+    return <div className={className}>{children}</div>;
+  }
+
   return (
     <motion.div
       className={className}
+      initial="visible"
       variants={{
         hidden: { 
           opacity: 0, 

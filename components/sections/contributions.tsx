@@ -10,11 +10,20 @@ import { Button } from '@/components/ui/button';
 import Link from 'next/link';
 
 export function ContributionsSection({ username = 'parth-valia' }: { username?: string }) {
+  const [mounted, setMounted] = React.useState(false);
+  
+  React.useEffect(() => {
+    setMounted(true);
+  }, []);
+
   function formatDate(dateString: string): string {
     const date = new Date(dateString);
     const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
     return `${months[date.getMonth()]} ${date.getDate()}, ${date.getFullYear()}`;
   }
+
+  // Get current date once on mount to avoid hydration mismatch
+  const lastUpdated = mounted ? formatDate(new Date().toDateString()) : 'Loading...';
   
   return (
     <section className="py-8 sm:py-12 lg:py-20 relative overflow-hidden">      
@@ -112,7 +121,7 @@ export function ContributionsSection({ username = 'parth-valia' }: { username?: 
 
               {/* Terminal Footer */}
               <div className="flex items-center justify-between text-xs font-mono text-gray-500 pt-2 border-t border-matrix-gray-dark">
-                <span suppressHydrationWarning>Last updated: {formatDate(new Date().toDateString())}</span>
+                <span>Last updated: {lastUpdated}</span>
                 <span>Status: Active Developer</span>
               </div>
             </div>

@@ -1,6 +1,6 @@
 'use client';
 
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { useSectionVisibility } from '@/hooks/use-section-visibility';
 
@@ -46,10 +46,15 @@ export const AnimatedSection: React.FC<AnimatedSectionProps> = ({
   duration = 0.8,
   staggerChildren = false
 }) => {
+  const [mounted, setMounted] = useState(false);
   const { elementRef, isVisible, hasBeenVisible } = useSectionVisibility({
     threshold: 0.2,
     rootMargin: '-5% 0px -5% 0px'
   });
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
   const variants = animationVariants[animationType];
 
@@ -73,13 +78,22 @@ export const AnimatedSection: React.FC<AnimatedSectionProps> = ({
 
   const itemVariants = staggerChildren ? variants : {};
 
+  // Render without motion during SSR to avoid hydration mismatch
+  if (!mounted) {
+    return (
+      <section ref={elementRef} id={id} className={className}>
+        {children}
+      </section>
+    );
+  }
+
   return (
     <motion.section
       ref={elementRef}
       id={id}
       className={className}
-      initial="hidden"
-      animate={isVisible ? "visible" : hasBeenVisible ? "exit" : "hidden"}
+      initial="visible"
+      animate={isVisible ? "visible" : hasBeenVisible ? "exit" : "visible"}
       variants={staggerChildren ? containerVariants : variants}
       transition={{
         duration,

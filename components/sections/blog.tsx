@@ -75,14 +75,14 @@ export function BlogSection() {
                     <div>
                       <div className="relative">
                         {post.image && (
-                          <div className="aspect-video relative overflow-hidden h-auto w-auto">
+                          <div className="aspect-video relative overflow-hidden">
                             <Image
                               src={post.image}
                               alt={post.title}
-                              width="0"
-                              height="0"
+                              fill
+                              sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                               priority
-                              className="object-cover transition-transform duration-300 group-hover:scale-105 w-full h-auto"
+                              className="object-cover transition-transform duration-300 group-hover:scale-105"
                             />
                           </div>
                         )}
@@ -106,7 +106,7 @@ export function BlogSection() {
                         <div className="flex items-center justify-between text-sm text-muted-foreground mb-4">
                           <div className="flex items-center gap-2">
                             <Calendar className="h-4 w-4" />
-                            <span suppressHydrationWarning>{formatDate(post.date)}</span>
+                            <span>{formatDate(post.date)}</span>
                           </div>
                           <div className="flex items-center gap-2">
                             <Clock className="h-4 w-4" />

@@ -30,7 +30,12 @@ export function ScrollReveal({
   });
   const controls = useAnimation();
   const [hasAnimated, setHasAnimated] = useState(false);
+  const [mounted, setMounted] = useState(false);
   const { shouldAnimate } = useFirstVisit();
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
   const getInitialPosition = () => {
     switch (direction) {
@@ -76,6 +81,12 @@ export function ScrollReveal({
   };
 
   useEffect(() => {
+    // Don't animate until mounted to avoid hydration mismatch
+    if (!mounted) {
+      controls.set({ ...getAnimatePosition() });
+      return;
+    }
+
     if (!shouldAnimate) {
       // Immediately set visible once and bail out of further updates
       controls.set({ ...getAnimatePosition() });
@@ -102,12 +113,17 @@ export function ScrollReveal({
         },
       });
     }
-  }, [isInView, controls, delay, duration, hasAnimated, direction, distance, shouldAnimate]);
+  }, [isInView, controls, delay, duration, hasAnimated, direction, distance, shouldAnimate, mounted]);
+
+  // Render without motion during SSR to avoid hydration mismatch
+  if (!mounted) {
+    return <div ref={ref} className={className}>{children}</div>;
+  }
 
   return (
     <motion.div
       ref={ref}
-      initial={shouldAnimate ? getInitialPosition() : getAnimatePosition()}
+      initial={getAnimatePosition()}
       animate={controls}
       className={className}
     >

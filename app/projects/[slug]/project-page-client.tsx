@@ -175,14 +175,14 @@ export default function ProjectPageClient({ project, featuredProjects }: Project
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.6, delay: 0.4 }}
           >
-            <div className="aspect-video relative overflow-hidden rounded-lg card-matrix hover-lift h-auto w-auto">
+            <div className="aspect-video relative overflow-hidden rounded-lg card-matrix hover-lift">
               <Image
                 src={project.coverImage}
                 alt={project.title}
+                fill
+                sizes="(max-width: 1200px) 100vw, 1200px"
                 priority
-                width="0"
-                height="0"
-                className="object-cover hover:scale-105 transition-transform duration-500 w-full h-auto"
+                className="object-cover hover:scale-105 transition-transform duration-500"
               />
               <div className="absolute inset-0 bg-gradient-to-t from-black/20 via-transparent to-transparent" />
             </div>
@@ -282,14 +282,14 @@ export default function ProjectPageClient({ project, featuredProjects }: Project
               {featuredProjects.map((project, index) => (
                 <RevealOnScroll key={project.slug} delay={index * 0.1}>
                   <Card className="h-full relative overflow-hidden group cursor-pointer border-0 shadow-md hover:shadow-xl transition-all duration-300">
-                    <div className="aspect-video relative overflow-hidden h-auto w-auto">
+                    <div className="aspect-video relative overflow-hidden">
                       <Image
                         src={project.coverImage}
                         alt={project.title}
-                        width="0"
-                        height="0"
+                        fill
+                        sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                         priority
-                        className="object-cover group-hover:scale-105 transition-transform duration-300 w-full h-auto"
+                        className="object-cover group-hover:scale-105 transition-transform duration-300"
                       />
                       <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
                       <div className="absolute bottom-4 left-4 right-4">

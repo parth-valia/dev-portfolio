@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 interface MatrixBackgroundProps {
   className?: string;
@@ -8,15 +8,21 @@ interface MatrixBackgroundProps {
 
 export function MatrixBackground({ className = '' }: MatrixBackgroundProps) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
+  const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  useEffect(() => {
+    if (!mounted) return;
+    
     const canvas = canvasRef.current;
     if (!canvas) return;
 
     const ctx = canvas.getContext('2d');
     if (!ctx) return;
 
-    // Set canvas size
     const resizeCanvas = () => {
       canvas.width = window.innerWidth;
       canvas.height = window.innerHeight;
@@ -24,7 +30,6 @@ export function MatrixBackground({ className = '' }: MatrixBackgroundProps) {
     resizeCanvas();
     window.addEventListener('resize', resizeCanvas);
 
-    // Matrix characters
     const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789@#$%^&*(){}[]|\\:";\'<>?,./`~';
     const charArray = chars.split('');
 
@@ -32,7 +37,6 @@ export function MatrixBackground({ className = '' }: MatrixBackgroundProps) {
     const columns = canvas.width / fontSize;
     const drops: number[] = [];
 
-    // Initialize drops
     for (let i = 0; i < columns; i++) {
       drops[i] = 1;
     }
@@ -40,7 +44,6 @@ export function MatrixBackground({ className = '' }: MatrixBackgroundProps) {
     let animationId: number;
 
     const draw = () => {
-      // Semi-transparent black background for trail effect
       ctx.fillStyle = 'rgba(0, 0, 0, 0.05)';
       ctx.fillRect(0, 0, canvas.width, canvas.height);
 
@@ -51,7 +54,6 @@ export function MatrixBackground({ className = '' }: MatrixBackgroundProps) {
         const text = charArray[Math.floor(Math.random() * charArray.length)];
         ctx.fillText(text, i * fontSize, drops[i] * fontSize);
 
-        // Reset drop to top randomly
         if (drops[i] * fontSize > canvas.height && Math.random() > 0.975) {
           drops[i] = 0;
         }
@@ -67,7 +69,7 @@ export function MatrixBackground({ className = '' }: MatrixBackgroundProps) {
       window.removeEventListener('resize', resizeCanvas);
       cancelAnimationFrame(animationId);
     };
-  }, []);
+  }, [mounted]);
 
   return (
     <canvas

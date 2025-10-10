@@ -19,22 +19,24 @@ export function Header() {
   const router = useRouter();
   const [isMobile, setIsMobile] = useState(false);
   const [showScrollTop, setShowScrollTop] = useState(false);
+  const [mounted, setMounted] = useState(false);
 
-  // Check if device is mobile - handle SSR properly
   useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  useEffect(() => {
+    if (!mounted) return;
+    
     const checkMobile = () => {
-      setIsMobile(typeof window !== 'undefined' ? window.innerWidth < 768 : false);
+      setIsMobile(window.innerWidth < 768);
     };
 
     checkMobile();
-    if (typeof window !== 'undefined') {
-      window.addEventListener('resize', checkMobile);
+    window.addEventListener('resize', checkMobile);
+    return () => window.removeEventListener('resize', checkMobile);
+  }, [mounted]);
 
-      return () => window.removeEventListener('resize', checkMobile);
-    }
-  }, []);
-
-  // Determine which section should be highlighted based on current page
   const getActiveSection = () => {
     if (pathname === '/blog') return 'blog';
     if (pathname === '/projects') return 'projects';
@@ -44,6 +46,19 @@ export function Header() {
     if (pathname.startsWith('/projects/')) return 'projects';
     return activeSection;
   };
+
+  useEffect(() => {
+    if (typeof window === 'undefined') return;
+    
+    const hash = window.location.hash;
+    if (hash && pathname === '/') {
+      const sectionId = hash.replace('#', '');
+      const timer = setTimeout(() => {
+        smoothScrollTo(sectionId);
+      }, 300);
+      return () => clearTimeout(timer);
+    }
+  }, [pathname]);
 
   useEffect(() => {
     if (typeof window === 'undefined') return;
@@ -146,19 +161,12 @@ export function Header() {
                   key={item.href}
                   onClick={() => {
                     if (item.href.startsWith('#')) {
-                      // Smart navigation logic
                       if (pathname === '/') {
-                        // On home page, scroll to section
                         smoothScrollTo(sectionId);
                       } else if (pathname === `/${sectionId}`) {
-                        // Already on the dedicated page, stay here
                         return;
                       } else {
-                        // Navigate to home page then scroll to section
-                        router.push('/');
-                        setTimeout(() => {
-                          smoothScrollTo(sectionId);
-                        }, 100);
+                        router.push(`/#${sectionId}`);
                       }
                     } else {
                       router.push(item.href);
@@ -171,7 +179,7 @@ export function Header() {
                 >
                   {item.name}
                   <span className="pointer-events-none absolute -bottom-1 left-0 h-0.5 w-0 bg-gradient-to-r from-matrix-green via-cyber-blue to-matrix-green transition-all duration-500 group-hover:w-full rounded-full shadow-neon-green" />
-                  {isActive && (
+                  {mounted && isActive && (
                     <motion.div
                       className="absolute -bottom-1 left-0 right-0 h-0.5 bg-matrix-green shadow-neon-green"
                       layoutId="underline"
@@ -230,19 +238,12 @@ export function Header() {
                     onClick={() => {
                       setIsOpen(false);
                       if (item.href.startsWith('#')) {
-                        // Smart navigation logic
                         if (pathname === '/') {
-                          // On home page, scroll to section
                           smoothScrollTo(sectionId);
                         } else if (pathname === `/${sectionId}`) {
-                          // Already on the dedicated page, stay here
                           return;
                         } else {
-                          // Navigate to home page then scroll to section
-                          router.push('/');
-                          setTimeout(() => {
-                            smoothScrollTo(sectionId);
-                          }, 100);
+                          router.push(`/#${sectionId}`);
                         }
                       } else {
                         router.push(item.href);
@@ -317,7 +318,6 @@ export function Header() {
               strokeLinecap="round"
               strokeDasharray={100}
               initial={{ strokeDashoffset: 0 }}
-              // Map 0-100 scrollProgress to strokeDashoffset (reverse so ring fills as you scroll)
               animate={{ strokeDashoffset: 100 - scrollProgress }}
               transition={{ duration: 0.2, ease: 'linear' }}
             />

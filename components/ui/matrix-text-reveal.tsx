@@ -1,7 +1,7 @@
 'use client';
 
 import { motion, useInView, useAnimation } from 'framer-motion';
-import { useRef, useEffect, ReactNode } from 'react';
+import { useRef, useEffect, ReactNode, useState } from 'react';
 
 interface MatrixTextRevealProps {
   children: ReactNode;
@@ -23,16 +23,30 @@ export function MatrixTextReveal({
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true, margin: '-50px' });
   const controls = useAnimation();
+  const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  useEffect(() => {
+    if (!mounted) {
+      controls.set('visible');
+      return;
+    }
     if (isInView) {
       controls.start('visible');
     }
-  }, [isInView, controls]);
+  }, [isInView, controls, mounted]);
 
   // Convert text to individual characters for staggered animation
   const text = typeof children === 'string' ? children : '';
   const characters = text.split('');
+
+  // Render without motion during SSR to avoid hydration mismatch
+  if (!mounted) {
+    return <div ref={ref} className={className}>{children}</div>;
+  }
 
   if (typeof children !== 'string') {
     // If children is not a string, render as normal animated element
@@ -40,7 +54,7 @@ export function MatrixTextReveal({
       <motion.div
         ref={ref}
         className={className}
-        initial="hidden"
+        initial="visible"
         animate={controls}
         variants={{
           hidden: {
@@ -71,7 +85,7 @@ export function MatrixTextReveal({
     <motion.div
       ref={ref}
       className={className}
-      initial="hidden"
+      initial="visible"
       animate={controls}
       variants={{
         hidden: {},
@@ -155,20 +169,33 @@ export function TerminalText({
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true });
   const controls = useAnimation();
+  const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  useEffect(() => {
+    if (!mounted) {
+      controls.set('visible');
+      return;
+    }
     if (isInView) {
       controls.start('visible');
     }
-  }, [isInView, controls]);
+  }, [isInView, controls, mounted]);
+
+  // Render without motion during SSR to avoid hydration mismatch
+  if (!mounted) {
+    return <div ref={ref} className={`font-mono ${className} items-center justify-center`}>{text}</div>;
+  }
 
   return (
     <motion.div
       ref={ref}
       className={`font-mono ${className} items-center justify-center`}
-      initial="hidden"
+      initial="visible"
       animate={controls}
-
       variants={{
         hidden: {
           opacity: 0

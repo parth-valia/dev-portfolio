@@ -18,20 +18,10 @@ const categories = ['all', 'mobile', 'web', 'blockchain'];
 
 // Consistent date formatting to prevent hydration errors
 function formatDate(dateString: string): string {
-  if (typeof window === 'undefined') {
-    // Server-side: use consistent formatting
-    const date = new Date(dateString);
-    const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
-    return `${months[date.getMonth()]} ${date.getDate()}, ${date.getFullYear()}`;
-  } else {
-    // Client-side: use Intl API for consistent formatting
-    const date = new Date(dateString);
-    return new Intl.DateTimeFormat('en-US', {
-      month: 'short',
-      day: 'numeric',
-      year: 'numeric'
-    }).format(date);
-  }
+  // Always use the same formatting on both server and client
+  const date = new Date(dateString);
+  const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+  return `${months[date.getMonth()]} ${date.getDate()}, ${date.getFullYear()}`;
 }
 
 type Repo = {
@@ -143,14 +133,14 @@ export default function ProjectsPage() {
                   <Card className="h-full overflow-hidden group cursor-pointer border-0 shadow-md hover:shadow-xl transition-all duration-300">
                     {/* Main clickable area for project details */}
                     <Link href={`/projects/${project.slug}`} className="block relative">
-                      <div className="aspect-video relative overflow-hidden h-auto w-auto">
+                      <div className="aspect-video relative overflow-hidden">
                         <Image
                           src={project.coverImage}
                           alt={project.title}
-                          width="0"
-                          height="0"
+                          fill
+                          sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                           priority
-                          className="object-cover group-hover:scale-105 transition-transform duration-300 w-full h-auto"
+                          className="object-cover group-hover:scale-105 transition-transform duration-300"
                         />
                         <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
                         <div className="absolute bottom-4 left-4 right-4">
@@ -323,7 +313,7 @@ export default function ProjectsPage() {
                           <span className="flex items-center gap-1"><Star className="h-3 w-3" /> {repo.stargazers_count}</span>
                           <span>Forks {repo.forks_count}</span>
                         </div>
-                        <span suppressHydrationWarning>Updated {formatDate(repo.updated_at)}</span>
+                        <span>Updated {formatDate(repo.updated_at)}</span>
                       </div>
                       <div className="pt-2">
                         <Button asChild size="sm" variant="ghost">

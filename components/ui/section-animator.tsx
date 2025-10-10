@@ -1,5 +1,7 @@
+'use client';
+
 import { motion, useInView, Variants } from 'framer-motion';
-import { useRef, ReactNode } from 'react';
+import { useRef, ReactNode, useState, useEffect } from 'react';
 import { useFirstVisit } from '@/components/ui/first-visit-provider';
 
 interface SectionAnimatorProps {
@@ -25,6 +27,11 @@ export function SectionAnimator({
     margin: "-10% 0px -10% 0px"
   });
   const { shouldAnimate } = useFirstVisit();
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
   const getAnimationVariants = (): Variants => {
     switch (animationType) {
@@ -56,13 +63,27 @@ export function SectionAnimator({
     }
   };
 
+  // Render with consistent state during SSR to avoid hydration mismatch
+  if (!mounted) {
+    return (
+      <section ref={ref} id={id} className={`relative ${className}`}>
+        {animationType === 'matrix' && (
+          <div className="absolute inset-0 pointer-events-none">
+            <div className="absolute inset-0" style={{ backgroundColor: 'transparent' }} />
+          </div>
+        )}
+        {children}
+      </section>
+    );
+  }
+
   return (
     <motion.section
       ref={ref}
       id={id}
       className={`relative ${className}`}
       variants={getAnimationVariants()}
-      initial={shouldAnimate ? "hidden" : "visible"}
+      initial="visible"
       animate={shouldAnimate ? (isInView ? "visible" : "exit") : "visible"}
     >
       {animationType === 'matrix' && (
