@@ -37,14 +37,14 @@ export default function RootLayout({
         <HydrationDebugger />
         <ThemeProvider defaultTheme="dark">
           <FirstVisitProvider>
-            <SmoothScroll />
+            {/* <SmoothScroll /> */}
             <Header />
             <main className="min-h-screen">
-              <Suspense>
-                <PageTransition>
+              {/* <Suspense> */}
+                {/* <PageTransition> */}
                   {children}
-                </PageTransition>
-              </Suspense>
+                {/* </PageTransition> */}
+              {/* </Suspense> */}
             </main>
             <Footer />
             <Toaster />
