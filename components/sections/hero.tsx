@@ -1,40 +1,41 @@
-'use client';
+"use client";
 
-import { motion } from 'framer-motion';
-import { ArrowRight, Download, Mail, MapPin, Code, Github } from 'lucide-react';
-import Link from 'next/link';
-import { Button } from '@/components/ui/button';
-import { TypewriterText } from '@/components/ui/typewriter-text';
-import { TerminalWindow } from '@/components/ui/terminal-window';
-import { SectionAnimator } from '@/components/ui/section-animator';
-import { siteConfig } from '@/site.config';
+import { ArrowRight, Code, Download, Github, MapPin } from "lucide-react";
+
+import { Button } from "@/components/ui/button";
+import { SectionAnimator } from "@/components/ui/section-animator";
+import { TerminalWindow } from "@/components/ui/terminal-window";
+import { TypewriterText } from "@/components/ui/typewriter-text";
+import { siteConfig } from "@/site.config";
+import { motion } from "framer-motion";
+import Link from "next/link";
 
 const roles = [
   "React Native Developer",
   "Mobile App Engineer",
   "Cross-Platform App Specialist",
   "Performance & UX Optimizer",
-  "Code Perfectionist"
+  "Code Perfectionist",
 ];
 
 const terminalCommands = [
-  '$ whoami',
-  '> parth-valia',
-  '$ cat skills.txt',
-  '> React Native | React.js | Next.js | TypeScript | Redux',
-  '> AWS | Firebase | Performance Tuning',
-  '$ ls achievements/',
-  '> 30% crash reduction achieved ✓',
-  '> 10+ apps shipped to production ✓',
-  '> 20K+ downloads generated ✓',
-  '$ status',
-  '> Ready for next challenge...'
+  "$ whoami",
+  "> parth-valia",
+  "$ cat skills.txt",
+  "> React Native | React.js | Next.js | TypeScript | Redux",
+  "> AWS | Firebase | Performance Tuning",
+  "$ ls achievements/",
+  "> 30% crash reduction achieved ✓",
+  "> 10+ apps shipped to production ✓",
+  "> 20K+ downloads generated ✓",
+  "$ status",
+  "> Ready for next challenge...",
 ];
 
 export function HeroSection() {
   return (
-    <SectionAnimator 
-      className="min-h-screen flex items-center justify-center relative overflow-hidden pt-6 lg:pt-0"
+    <SectionAnimator
+      className="min-h-screen flex items-center justify-center relative overflow-hidden lg:pt-0"
       animationType="matrix"
       duration={1.2}
     >
@@ -43,7 +44,6 @@ export function HeroSection() {
 
       <div className="container mx-auto px-4 sm:px-6 pb-10 lg:pb-0 lg:px-8 relative z-10">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 items-center min-h-screen  py-8 xs:py-0 sm:py-12 lg:py-20">
-
           {/* Left Side - Main Content */}
           <div className="space-y-4 sm:space-y-6 lg:space-y-8">
             {/* Status Indicator */}
@@ -55,7 +55,9 @@ export function HeroSection() {
             >
               <div className="flex items-center space-x-2">
                 <div className="w-3 h-3 rounded-full bg-matrix-green animate-pulse"></div>
-                <span className="text-matrix-green font-mono text-sm">ONLINE</span>
+                <span className="text-matrix-green font-mono text-sm">
+                  ONLINE
+                </span>
               </div>
               <div className="h-4 w-px bg-matrix-green"></div>
               <div className="flex items-center space-x-2 text-matrix-green">
@@ -72,7 +74,7 @@ export function HeroSection() {
                 transition={{ delay: 0.4 }}
                 className="font-mono text-matrix-green text-lg"
               >
-                {'>'} Hello World! I'm
+                {">"} Hello World! I'm
               </motion.div>
 
               <motion.h1
@@ -85,10 +87,7 @@ export function HeroSection() {
               </motion.h1>
 
               <div className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-mono">
-                <TypewriterText
-                  texts={roles}
-                  className="text-cyber-blue"
-                />
+                <TypewriterText texts={roles} className="text-cyber-blue" />
               </div>
             </div>
 
@@ -100,15 +99,28 @@ export function HeroSection() {
               className="space-y-3 sm:space-y-4"
             >
               <p className="text-sm sm:text-base lg:text-lg text-gray-300 leading-relaxed max-w-xl">
-                Crafting exceptional mobile and web experiences with{' '}
-                <span className="text-matrix-green font-mono">React Native</span>,{' '}
-                <span className="text-matrix-green font-mono">React.js</span> and{' '}
-                <span className="text-matrix-green font-mono">Next.js</span>.
-                Specialized in performance optimization, crash reduction, and scalable architecture.
+                Crafting exceptional mobile and web experiences with{" "}
+                <span className="text-matrix-green font-mono">
+                  React Native
+                </span>
+                , <span className="text-matrix-green font-mono">React.js</span>{" "}
+                and <span className="text-matrix-green font-mono">Next.js</span>
+                . Specialized in performance optimization, crash reduction, and
+                scalable architecture.
               </p>
 
               <div className="flex flex-wrap gap-2">
-                {['React Native', 'React.js', 'Next.js', 'JavaScript', 'TypeScript', 'Redux', 'Firebase', 'Performance', 'AWS'].map((skill, index) => (
+                {[
+                  "React Native",
+                  "React.js",
+                  "Next.js",
+                  "JavaScript",
+                  "TypeScript",
+                  "Redux",
+                  "Firebase",
+                  "Performance",
+                  "AWS",
+                ].map((skill, index) => (
                   <motion.span
                     key={skill}
                     initial={{ opacity: 0, scale: 0.8 }}
@@ -147,7 +159,11 @@ export function HeroSection() {
                 asChild
                 className="border-cyber-blue text-cyber-blue hover:bg-cyber-blue hover:text-black font-mono group"
               >
-                <Link href="/resume.pdf" target="_blank" rel="noopener noreferrer">
+                <Link
+                  href="/resume.pdf"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
                   <Download className="mr-2 h-4 w-4" />
                   Download Resume
                 </Link>
@@ -159,7 +175,11 @@ export function HeroSection() {
                 asChild
                 className="text-gray-400 hover:text-matrix-green font-mono group"
               >
-                <Link href={siteConfig.github} target="_blank" rel="noopener noreferrer">
+                <Link
+                  href={siteConfig.github}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
                   <Github className="mr-2 h-4 w-4" />
                   GitHub
                 </Link>
@@ -174,16 +194,28 @@ export function HeroSection() {
               className="grid grid-cols-3 gap-3 sm:gap-4 lg:gap-6 pt-4 sm:pt-6 lg:pt-8 border-t border-matrix-gray-dark"
             >
               <div className="text-center">
-                <div className="text-lg sm:text-xl lg:text-2xl font-bold text-matrix-green font-mono">2.8+</div>
-                <div className="text-xs sm:text-sm text-gray-400 font-mono">Years Exp</div>
+                <div className="text-lg sm:text-xl lg:text-2xl font-bold text-matrix-green font-mono">
+                  2.8+
+                </div>
+                <div className="text-xs sm:text-sm text-gray-400 font-mono">
+                  Years Exp
+                </div>
               </div>
               <div className="text-center">
-                <div className="text-lg sm:text-xl lg:text-2xl font-bold text-cyber-blue font-mono">10+</div>
-                <div className="text-xs sm:text-sm text-gray-400 font-mono">Apps Shipped</div>
+                <div className="text-lg sm:text-xl lg:text-2xl font-bold text-cyber-blue font-mono">
+                  10+
+                </div>
+                <div className="text-xs sm:text-sm text-gray-400 font-mono">
+                  Apps Shipped
+                </div>
               </div>
               <div className="text-center">
-                <div className="text-lg sm:text-xl lg:text-2xl font-bold text-cyber-purple font-mono">30%</div>
-                <div className="text-xs sm:text-sm text-gray-400 font-mono">Crash Reduction</div>
+                <div className="text-lg sm:text-xl lg:text-2xl font-bold text-cyber-purple font-mono">
+                  30%
+                </div>
+                <div className="text-xs sm:text-sm text-gray-400 font-mono">
+                  Crash Reduction
+                </div>
               </div>
             </motion.div>
           </div>
@@ -203,12 +235,13 @@ export function HeroSection() {
                     initial={{ opacity: 0 }}
                     animate={{ opacity: 1 }}
                     transition={{ delay: 2.2 + index * 0.3 }}
-                    className={`font-mono text-sm ${command.startsWith('$')
-                      ? 'text-cyber-blue'
-                      : command.startsWith('>')
-                        ? 'text-matrix-green'
-                        : 'text-gray-400'
-                      }`}
+                    className={`font-mono text-sm ${
+                      command.startsWith("$")
+                        ? "text-cyber-blue"
+                        : command.startsWith(">")
+                        ? "text-matrix-green"
+                        : "text-gray-400"
+                    }`}
                   >
                     {command}
                   </motion.div>
