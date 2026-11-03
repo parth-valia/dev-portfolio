@@ -1,37 +1,55 @@
-import { HeroSection } from '@/components/sections/hero';
-import { FeaturedProjects } from '@/components/sections/featured-projects';
-import { ExperienceSection } from '@/components/sections/experience';
-import { EducationSection } from '@/components/sections/education';
-import { BlogSection } from '@/components/sections/blog';
-import { ContributionsSection } from '@/components/sections/contributions';
-import { ContactSection } from '@/components/sections/contact';
-import { MinimalBackground } from '@/components/ui/minimal-background';
+import type { Metadata } from 'next';
+import { ZeroPage } from '@/components/zero/zero-page';
+import { POSITIONING } from '@/content/narrative';
+import { FAQ, SEO } from '@/content/zero';
+import { siteConfig } from '@/site.config';
 
-export default function Home() {
+export const metadata: Metadata = {
+  title: SEO.title,
+  description: SEO.description,
+  keywords: SEO.keywords,
+  alternates: { canonical: '/' },
+  openGraph: { title: SEO.title, description: SEO.description, url: '/', type: 'website' },
+  twitter: { card: 'summary_large_image', title: SEO.title, description: SEO.description },
+};
+
+const PERSON = {
+  '@type': 'Person',
+  '@id': `${siteConfig.url}/#person`,
+  name: siteConfig.name,
+  jobTitle: POSITIONING.role,
+  email: siteConfig.email,
+  url: siteConfig.url,
+  sameAs: Object.values(siteConfig.social),
+  knowsAbout: [...SEO.services, 'React Native', 'Next.js', 'Node.js', 'AWS Lambda', 'Fintech', 'KYC/KYB integrations', 'Offline-first apps'],
+  address: { '@type': 'PostalAddress', addressLocality: 'Mumbai', addressCountry: 'IN' },
+};
+
+const STRUCTURED_DATA = {
+  '@context': 'https://schema.org',
+  '@graph': [
+    PERSON,
+    {
+      '@type': 'ProfessionalService',
+      name: `${siteConfig.name}, ${POSITIONING.role}`,
+      description: SEO.description,
+      url: siteConfig.url,
+      founder: { '@id': PERSON['@id'] },
+      areaServed: 'Worldwide',
+      serviceType: SEO.services,
+    },
+    {
+      '@type': 'FAQPage',
+      mainEntity: FAQ.map((item) => ({ '@type': 'Question', name: item.q, acceptedAnswer: { '@type': 'Answer', text: item.a } })),
+    },
+  ],
+};
+
+export default function ZeroRoute() {
   return (
-    <div>
-      <MinimalBackground />
-      <section id="home" className="scroll-mt-24 md:scroll-mt-28">
-        <HeroSection />
-      </section>
-      <section id="projects" className="scroll-mt-24 md:scroll-mt-28">
-        <FeaturedProjects />
-      </section>
-      <section id="experience" className="scroll-mt-24 md:scroll-mt-28">
-        <ExperienceSection />
-      </section>
-      <section id="education" className="scroll-mt-24 md:scroll-mt-28">
-        <EducationSection />
-      </section>
-      <section id="blog" className="scroll-mt-24 md:scroll-mt-28">
-        <BlogSection />
-      </section>
-      <section id="github" className="scroll-mt-24 md:scroll-mt-28">
-        <ContributionsSection />
-      </section>
-      <section id="contact" className="scroll-mt-24 md:scroll-mt-28">
-        <ContactSection />
-      </section>
-    </div>
+    <>
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(STRUCTURED_DATA) }} />
+      <ZeroPage />
+    </>
   );
 }

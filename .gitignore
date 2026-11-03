@@ -33,3 +33,6 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# per-agent build folders (NEXT_DIST_DIR)
+/.next-*/

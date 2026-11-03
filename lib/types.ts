@@ -3,6 +3,7 @@ export interface Project {
   title: string;
   subtitle: string;
   role: string;
+  company?: string;
   timeframe: string;
   highlights: string[];
   features: string[];
@@ -22,7 +23,7 @@ export interface Project {
     installs?: string;
     engagement?: number;
   };
-  category: 'mobile' | 'web' | 'blockchain';
+  category: 'mobile' | 'web' | 'blockchain' | 'fintech';
 }
 
 export interface Experience {
@@ -34,12 +35,6 @@ export interface Experience {
   technologies: string[];
 }
 
-export interface Skill {
-  name: string;
-  level: number;
-  category: string;
-}
-
 export interface BlogPost {
   slug: string;
   title: string;
@@ -49,7 +44,6 @@ export interface BlogPost {
   tags: string[];
   coverImage: string;
   image: string;
-  readingTime: string;
   readTime: string;
   content: string;
   category: string;

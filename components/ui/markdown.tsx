@@ -4,10 +4,26 @@ import React from 'react';
 
 type MarkdownProps = {
   content: string;
+  className?: string;
 };
 
-// Very small markdown renderer: supports headings (#, ##, ###), lists (-), inline code `code`, and code fences ```
-export function Markdown({ content }: MarkdownProps) {
+const INLINE = /(`[^`]+`|\*\*[^*]+\*\*|\*[^*\s][^*]*\*)/g;
+const ORDERED = /^\d+\.\s+/;
+
+// Inline marks: `code`, **bold**, *italic*; stray backticks are dropped.
+function renderInline(text: string) {
+  return text.split(INLINE).map((part, idx) => {
+    if (part.startsWith('`') && part.endsWith('`') && part.length > 1) {
+      return <code key={idx}>{part.slice(1, -1)}</code>;
+    }
+    if (part.startsWith('**') && part.endsWith('**')) return <strong key={idx}>{part.slice(2, -2)}</strong>;
+    if (part.startsWith('*') && part.endsWith('*') && part.length > 2) return <em key={idx}>{part.slice(1, -1)}</em>;
+    return <React.Fragment key={idx}>{part.replace(/`+/g, '')}</React.Fragment>;
+  });
+}
+
+// Very small markdown renderer: supports headings (#, ##, ###), lists (- and 1.), inline marks, and code fences ```
+export function Markdown({ content, className }: MarkdownProps) {
   const lines = content.split('\n');
   const elements: React.ReactNode[] = [];
   let i = 0;
@@ -21,7 +37,7 @@ export function Markdown({ content }: MarkdownProps) {
         i++;
       }
       elements.push(
-        <pre key={`code-${i}`} className="rounded-md bg-muted p-4 overflow-auto text-sm">
+        <pre key={`code-${i}`}>
           <code>{codeLines.join('\n')}</code>
         </pre>
       );
@@ -64,9 +80,24 @@ export function Markdown({ content }: MarkdownProps) {
       elements.push(
         <ul key={`ul-${i}`} className="list-disc pl-6 my-3 space-y-1">
           {items.map((it, idx) => (
-            <li key={idx}>{it}</li>
+            <li key={idx}>{renderInline(it)}</li>
           ))}
         </ul>
+      );
+      continue;
+    }
+    if (ORDERED.test(line.trim())) {
+      const items: string[] = [];
+      while (i < lines.length && ORDERED.test(lines[i].trim())) {
+        items.push(lines[i].trim().replace(ORDERED, ''));
+        i++;
+      }
+      elements.push(
+        <ol key={`ol-${i}`} className="list-decimal pl-6 my-3 space-y-1">
+          {items.map((it, idx) => (
+            <li key={idx}>{renderInline(it)}</li>
+          ))}
+        </ol>
       );
       continue;
     }
@@ -77,38 +108,16 @@ export function Markdown({ content }: MarkdownProps) {
       i++;
     }
     if (paras.length > 0) {
-      const paragraph = paras.join(' ');
-      // If inline backticks are unmatched, strip them to avoid displaying stray ` characters
-      const backtickCount = (paragraph.match(/`/g) || []).length;
-      if (backtickCount < 2 || backtickCount % 2 !== 0) {
-        elements.push(
-          <p key={`p-${i}`} className="my-3">
-            {paragraph.replace(/`+/g, '')}
-          </p>
-        );
-      } else {
-        // Inline code replacement: `code` -> <code>code</code>
-        const parts = paragraph.split(/(`[^`]+`)/g);
-        elements.push(
-          <p key={`p-${i}`} className="my-3">
-            {parts.map((part, idx) => {
-              if (part.startsWith('`') && part.endsWith('`')) {
-                return (
-                  <code key={idx} className="px-1 py-0.5 rounded bg-muted text-sm">
-                    {part.slice(1, -1)}
-                  </code>
-                );
-              }
-              return <span key={idx}>{part}</span>;
-            })}
-          </p>
-        );
-      }
+      elements.push(
+        <p key={`p-${i}`} className="my-3">
+          {renderInline(paras.join(' '))}
+        </p>
+      );
     }
     // skip blank line
     i++;
   }
-  return <div className="prose dark:prose-invert max-w-none">{elements}</div>;
+  return <div className={className}>{elements}</div>;
 }
 
 

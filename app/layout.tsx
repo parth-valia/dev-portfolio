@@ -1,54 +1,30 @@
 import type { Metadata } from 'next';
-import { Inter } from 'next/font/google';
+import { Caveat, Chivo } from 'next/font/google';
 import './globals.css';
+import { SmoothScroll } from '@/components/motion/smooth-scroll';
+import { PixelPet } from '@/components/pixel-pet/pixel-pet';
 import { ThemeProvider } from '@/components/ui/theme-provider';
-import { FirstVisitProvider } from '@/components/ui/first-visit-provider';
-import { Header } from '@/components/layout/header';
-import { Footer } from '@/components/layout/footer';
-import { Toaster } from '@/components/ui/toaster';
-import { PageTransition } from '@/components/ui/page-transition';
-import { SmoothScroll } from '@/components/ui/smooth-scroll';
-import HydrationDebugger from '@/components/HydrationDebugger';
-import { Suspense } from 'react'
+import { ASK, SEO } from '@/content/zero';
+import { siteConfig } from '@/site.config';
 
-const inter = Inter({ subsets: ['latin'] });
+const sans = Chivo({ subsets: ['latin'], weight: ['400', '600', '800', '900'], variable: '--font-zero-sans' });
+const hand = Caveat({ subsets: ['latin'], weight: ['600'], variable: '--font-zero-hand' });
 
 export const metadata: Metadata = {
-  title: 'Parth Valia - React Native Developer',
-  description: 'Professional React Native developer with 2.8+ years of experience building exceptional mobile applications.',
-  icons: {
-    icon: '/favicon.ico',
-  },
-  other: {
-    'Cache-Control': 'no-cache, no-store, must-revalidate',
-    'Pragma': 'no-cache',
-    'Expires': '0',
-  },
+  metadataBase: new URL(siteConfig.url),
+  title: SEO.title,
+  description: SEO.description,
 };
 
-export default function RootLayout({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
+export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <body className={inter.className} suppressHydrationWarning>
-        <HydrationDebugger />
-        <ThemeProvider defaultTheme="dark">
-          <FirstVisitProvider>
-            {/* <SmoothScroll /> */}
-            <Header />
-            <main className="min-h-screen">
-              {/* <Suspense> */}
-                {/* <PageTransition> */}
-                  {children}
-                {/* </PageTransition> */}
-              {/* </Suspense> */}
-            </main>
-            <Footer />
-            <Toaster />
-          </FirstVisitProvider>
+      <body data-zero suppressHydrationWarning className={`${sans.variable} ${hand.variable} zero-root min-h-[100svh] bg-[color:var(--z-bg)] font-[family-name:var(--font-zero-sans)] text-[color:var(--z-ink)] antialiased`}>
+        <ThemeProvider defaultTheme="dark" storageKey="theme-zero">
+          <a href="#main" className="sr-only z-[80] bg-[color:var(--z-accent)] px-4 py-3 font-semibold text-[color:var(--z-on-accent)] focus:not-sr-only focus:fixed focus:left-4 focus:top-4">{ASK.skip}</a>
+          <SmoothScroll />
+          {children}
+          <PixelPet />
         </ThemeProvider>
       </body>
     </html>
