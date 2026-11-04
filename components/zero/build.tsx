@@ -25,7 +25,7 @@ export function Build() {
       <HeroHeadline className="order-1 lg:order-none" />
       <IdeaPrompt className="order-2 max-lg:z-40 lg:order-none" />
       <div className="sticky top-0 z-30 order-3 flex h-[100svh] flex-col max-lg:-mt-[14svh] max-lg:[@media(max-height:600px)]:mt-0 max-lg:[@media(max-width:374px)]:mt-0 max-lg:[@media(min-height:800px)]:-mt-[11svh] bg-[color:var(--z-bg)] lg:absolute lg:inset-y-0 lg:left-[42vw] lg:right-0 lg:z-0 lg:block lg:h-auto lg:bg-transparent">
-        <div data-pad className="h-[50svh] shrink-0 pt-16 lg:sticky lg:top-0 lg:h-[100svh] lg:pt-0">
+        <div className="h-[50svh] shrink-0 pt-16 lg:sticky lg:top-0 lg:h-[100svh] lg:pt-0">
           <PopupCanvas root={root} scene={BUILD_SCENE} phoneShift={PHONE_SHIFT} />
         </div>
         <div className="flex min-h-0 flex-1 lg:hidden"><BuildCaption active={active} /></div>

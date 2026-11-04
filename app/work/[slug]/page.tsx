@@ -1,5 +1,5 @@
 import type { Metadata } from 'next';
-import Image from 'next/image';
+import { unstable_getImgProps as getImgProps } from 'next/image';
 import { notFound } from 'next/navigation';
 import { ArrowUpRight } from 'lucide-react';
 import { Reveal } from '@/components/motion/reveal';
@@ -17,8 +17,23 @@ interface Props {
   params: { slug: string };
 }
 
-/** The cover's 21:9 version, in the same frame as a blog cover. */
-const COVER_BAND = 'aspect-[21/9]';
+/** The same frame as a blog cover: 3:2 on phones with the original cover, 21:9 on desktop with its extended version. */
+const COVER_BAND = 'aspect-[3/2] md:aspect-[21/9]';
+/** Tailwind's md breakpoint, where the wide cover takes over. */
+const DESKTOP = '(min-width: 768px)';
+
+/** One art-directed picture, so each viewport downloads only its own cover. */
+function Cover({ alt, phone, desktop }: { alt: string; phone: string; desktop: string }) {
+  const common = { alt, fill: true, priority: true, sizes: '100vw' };
+  const { props: wide } = getImgProps({ ...common, src: desktop });
+  const { props } = getImgProps({ ...common, src: phone });
+  return (
+    <picture>
+      <source media={DESKTOP} srcSet={wide.srcSet ?? wide.src} />
+      <img {...props} alt={alt} className="object-cover" />
+    </picture>
+  );
+}
 
 export const generateStaticParams = caseStudySlugs;
 
@@ -77,8 +92,8 @@ export default function ZeroCaseStudyPage({ params }: Props) {
           <p className={cn('mt-5 max-w-[44ch] md:mt-8', TYPE.lead)}><span className="font-semibold text-[color:var(--z-accent-ink)]">{study.outcomeMetric}</span> {study.outcomeLabel}</p>
         </Reveal>
         {study.coverImage && (
-          <Reveal className={cn('relative mt-8 overflow-hidden rounded-[16px] md:mt-14 md:rounded-[24px]', COVER_BAND)}>
-            <Image src={study.coverWide ?? study.coverImage} alt={`${study.title} product screens`} fill priority sizes="100vw" className="object-cover" />
+          <Reveal className={cn('relative mt-10 overflow-hidden rounded-[20px] md:mt-14 md:rounded-[24px]', COVER_BAND)}>
+            <Cover alt={`${study.title} product screens`} phone={study.coverImage} desktop={study.coverWide ?? study.coverImage} />
           </Reveal>
         )}
         <div className={cn('max-w-[1200px]', SECTION, 'py-8')}>

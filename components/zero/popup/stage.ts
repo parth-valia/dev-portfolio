@@ -10,7 +10,7 @@ import { createWorld } from './world';
 const FOV = { desktop: 30, touch: 24 };
 /** Below this width:height the lens widens so the pad keeps the same sideways view on narrow phone frames. */
 const MIN_ASPECT = 1.05;
-const DPR = { desktop: 2, touch: 1.5 };
+const DPR = { desktop: 2, touch: 2.5 };
 const SHADOW_MAP = { desktop: 2048, touch: 1024 };
 /** Share of the gap to the scroll target the build closes each frame; the hand leads, the paper follows. */
 const FOLLOW = 0.085;

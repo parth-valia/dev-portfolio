@@ -35,7 +35,6 @@ export const IDEA = {
   placeholder: 'a pet-sitting marketplace',
   examples: ['a pet-sitting marketplace', 'an AI tutor for kids', 'a clinic booking app', 'a crypto wallet'],
   submit: 'Build it',
-  building: 'Building',
   napkinNote: 'v1 → ship it!',
 };
 
