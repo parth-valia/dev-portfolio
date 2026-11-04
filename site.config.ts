@@ -1,6 +1,6 @@
 export const siteConfig = {
   name: 'Parth Valia',
-  url: 'https://parthvalia.dev',
+  url: 'https://parth-valia.vercel.app/',
   email: 'parthvalia2709@gmail.com',
   calendarUrl: 'https://cal.com/parth-valia-mirefh/30min',
   social: {
