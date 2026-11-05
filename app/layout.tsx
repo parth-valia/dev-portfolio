@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
 import { Caveat, Chivo } from 'next/font/google';
+import { Analytics } from '@vercel/analytics/next';
 import './globals.css';
 import { SmoothScroll } from '@/components/motion/smooth-scroll';
 import { PixelPet } from '@/components/pixel-pet/pixel-pet';
@@ -25,6 +26,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           <SmoothScroll />
           {children}
           <PixelPet />
+          <Analytics />
         </ThemeProvider>
       </body>
     </html>
